@@ -24,7 +24,7 @@ FICHIERS = {
         "approximative_file_size"   : "330MB",
           "compressed_file"			: False,
     }, 
-      "LISTE_DEPARTEMENTS" : {
+    "LISTE_DEPARTEMENTS" : {
         "url"               		: "https://www.data.gouv.fr/fr/datasets/r/5c219016-1eaf-41dc-9bba-2f32dfb71b72",
         "file_name"         		: "departments.json",
         "data_keys"         		: ["region_code","name"],
@@ -130,6 +130,7 @@ def set_up(download=True):
 
         f = open_file(CURRENT_DATA_NAME)
         try:
+            print(f, CURRENT_DATA_NAME)
             read_json_data_from_file(f, CURRENT_DATA_NAME)
         except:
             # print("The data file ", FICHIERS[CURRENT_DATA_NAME]["file_name"], " seem to be corrupted. Re-run the script with the download parameter.")
@@ -151,14 +152,11 @@ def clean_up():
         except:
             pass
 
-def drawDiagrams():
-    #TODO Créer un dict pour stocker une list de departement pour chaque région. ex : {"Ile-de-France":["Paris","Yvelines",...]}
-    #TODO Créer un dict pour stocker la population pour chaque région. ex : {"Ile-de-France":12000000,...}
-    #TODO Créer 
-
 def main():
     LISTE_GARES = DATA["LISTE_GARES"]
     PERTES = DATA["PERTES"]
+    LISTE_DEPARTEMENTS = DATA["LISTE_DEPARTEMENTS"]
+    LISTE_REGIONS = DATA["LISTE_REGIONS"]
 
     print("\n--------\n")
     print("Nombre de gares: ", len(LISTE_GARES))
@@ -170,6 +168,15 @@ def main():
     print("Informations des pertes: ", list(PERTES[0].keys()))
     print("Exemple: ", PERTES[0])
 
+    print("\n--------\n")
+    print("Nombre de departements: ", len(LISTE_DEPARTEMENTS))
+    print("Informations des departements: ", list(LISTE_DEPARTEMENTS[0].keys()))
+    print("Exemple: ", LISTE_DEPARTEMENTS[0])
+
+    print("\n--------\n")
+    print("Nombre de regions: ", len(LISTE_REGIONS))
+    print("Informations des regions: ", list(LISTE_REGIONS[0].keys()))
+    print("Exemple: ", LISTE_REGIONS[0])
 
 if __name__ == '__main__':
     download = False
@@ -181,10 +188,10 @@ if __name__ == '__main__':
             clean = True
 
     dataFilesNotOnDisk = True
-    for CURRENT_DATA_NAME in FICHIERS.keys():
-        if not os.path.isfile(FICHIERS[CURRENT_DATA_NAME]["file_name"]):
+    for package in FICHIERS.keys():
+        if not os.path.isfile(FICHIERS[package]["file_name"]):
             dataFilesNotOnDisk = False
-            print(str(FICHIERS[CURRENT_DATA_NAME]["file_name"]) + " not found on disk.")
+            print(str(FICHIERS[package]["file_name"]) + " not found on disk.")
     if not dataFilesNotOnDisk:
         print("You don't have all the data files. You need the data files in order for the program to work correctly. Do you agree to download them ? (yes/no)")
         download = (str(input()).lower() == "yes")

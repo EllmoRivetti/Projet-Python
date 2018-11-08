@@ -151,6 +151,11 @@ def clean_up():
         except:
             pass
 
+def drawDiagrams():
+    #TODO Créer un dict pour stocker une list de departement pour chaque région. ex : {"Ile-de-France":["Paris","Yvelines",...]}
+    #TODO Créer un dict pour stocker la population pour chaque région. ex : {"Ile-de-France":12000000,...}
+    #TODO Créer 
+
 def main():
     LISTE_GARES = DATA["LISTE_GARES"]
     PERTES = DATA["PERTES"]

@@ -30,7 +30,7 @@ FICHIERS = {
         "data_keys"         		: ["region_code","name"],
         "data_keys_aliases" 		: ["region_code","DepName"],
         "critical_keys"     		: ["region_code","name"],
-        "approximative_file_size"   : "?",
+        "approximative_file_size"   : "9Ko",
         "compressed_file"			: {"name": "French-zip-code-3.0.0-JSON.zip", "path":["json"]},
     },
     "LISTE_REGIONS" : {
@@ -39,7 +39,7 @@ FICHIERS = {
         "data_keys"         		: ["code","name"],
         "data_keys_aliases" 		: ["codeReg","RegName"],
         "critical_keys"     		: ["code","name"],
-        "approximative_file_size"   : "?",
+        "approximative_file_size"   : "2Ko",
         "compressed_file"			: {"name": "French-zip-code-3.0.0-JSON.zip", "path":["json"]},
     },
 }
@@ -78,9 +78,9 @@ def download_file(CURRENT_DATA_NAME):
         urllib.request.urlretrieve(FICHIERS[CURRENT_DATA_NAME]["url"], FICHIERS[CURRENT_DATA_NAME]["compressed_file"]["name"], progress_bar)
 
 def open_file(CURRENT_DATA_NAME):
-    if not FICHIERS[CURRENT_DATA_NAME]["compressed_file"]:
+    try:
         return open(FICHIERS[CURRENT_DATA_NAME]["file_name"])
-    else:
+    except:
         archive = zipfile.ZipFile(FICHIERS[CURRENT_DATA_NAME]["compressed_file"]["name"], 'r')
         path = []
         path.extend(FICHIERS[CURRENT_DATA_NAME]["compressed_file"]["path"])
@@ -130,10 +130,11 @@ def set_up(download=True):
 
         f = open_file(CURRENT_DATA_NAME)
         try:
+            print(f, CURRENT_DATA_NAME)
             read_json_data_from_file(f, CURRENT_DATA_NAME)
         except:
-            print("The data file ", FICHIERS[CURRENT_DATA_NAME]["file_name"], " seem to be corrupted. Re-run the script with the download parameter.")
-            print("You don't have the data file ", FICHIERS[CURRENT_DATA_NAME]["file_name"], ". Do you agree to download this file (Approximative size: ", FICHIERS[CURRENT_DATA_NAME]["approximative_file_size"], " ? (yes/no)")
+            # print("The data file ", FICHIERS[CURRENT_DATA_NAME]["file_name"], " seem to be corrupted. Re-run the script with the download parameter.")
+            print("You don't have the data file ", FICHIERS[CURRENT_DATA_NAME]["file_name"], " or this file is corrupted. Do you agree to download this file (Approximative size: ", FICHIERS[CURRENT_DATA_NAME]["approximative_file_size"], " ? (yes/no)")
             download = (str(input()).lower() == "yes")
             if not download:
                 print("Exiting..")
@@ -176,10 +177,10 @@ if __name__ == '__main__':
             clean = True
 
     dataFilesNotOnDisk = True
-    for package in FICHIERS.keys():
-        if not os.path.isfile(FICHIERS[package]["file_name"]):
+    for CURRENT_DATA_NAME in FICHIERS.keys():
+        if not os.path.isfile(FICHIERS[CURRENT_DATA_NAME]["file_name"]):
             dataFilesNotOnDisk = False
-            print(str(FICHIERS[package]["file_name"]) + " not found on disk.")
+            print(str(FICHIERS[CURRENT_DATA_NAME]["file_name"]) + " not found on disk.")
     if not dataFilesNotOnDisk:
         print("You don't have all the data files. You need the data files in order for the program to work correctly. Do you agree to download them ? (yes/no)")
         download = (str(input()).lower() == "yes")

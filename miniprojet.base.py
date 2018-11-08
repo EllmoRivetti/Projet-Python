@@ -130,7 +130,6 @@ def set_up(download=True):
 
         f = open_file(CURRENT_DATA_NAME)
         try:
-            print(f, CURRENT_DATA_NAME)
             read_json_data_from_file(f, CURRENT_DATA_NAME)
         except:
             # print("The data file ", FICHIERS[CURRENT_DATA_NAME]["file_name"], " seem to be corrupted. Re-run the script with the download parameter.")

@@ -45,6 +45,8 @@ FICHIERS = {
 }
 
 DATA = dict()
+DepInReg = dict()
+DicPop = dict()
 
 def progress_bar(blocks_transfered, block_size, total_size):
     import sys
@@ -151,6 +153,28 @@ def clean_up():
             os.remove(file)
         except:
             pass
+
+def drawDiagrams():
+    #TODO Créer un dict pour stocker une list de departement pour chaque région. ex : {"Ile-de-France":["Paris","Yvelines",...]}
+    #TODO Créer un dict pour stocker la population pour chaque région. ex : {"Ile-de-France":12000000,...}
+    f = open("pop.txt","r",encoding="utf-8")
+    for line in f.readlines():
+        splt = line.split(":")
+        DicPop[splt[0]] = splt[1]
+
+    print(DicPop)
+
+def isDepartementInRegion(departement,region):
+    if not (region in DepInReg):
+        print("This region doesn't exist")
+    
+    return departement in DepInReg[region]
+
+def getRegionForDepartement(departement):
+    for key in DepInReg.keys():
+        if isDepartementInRegion(departement,key):
+            return key
+    print("This departement doesn't exist")
 
 def main():
     LISTE_GARES = DATA["LISTE_GARES"]

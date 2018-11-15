@@ -4,6 +4,7 @@ import os
 import sys
 import os.path
 import zipfile
+import folium
 
 FICHIERS = {
     "LISTE_GARES" : {
@@ -13,7 +14,7 @@ FICHIERS = {
         "data_keys_aliases"         : ["departement", "commune", "uic", "coordonnees", "label"],
         "critical_keys"             : ["coordonnees_geographiques",],
         "approximative_file_size"   : "5MB",
-          "compressed_file"			: False,
+        "compressed_file"			: False,
     }, 
     "PERTES"      : {
         "url"                       : "https://data.sncf.com/explore/dataset/objets-trouves-gares/download/?format=json&timezone=Europe/Berlin", 
@@ -52,7 +53,9 @@ def progress_bar(blocks_transfered, block_size, total_size):
     import sys
     size = 20
     done_percentage = (blocks_transfered * block_size/total_size) * 100
+    os.system("cls") 
     sys.stdout.flush()
+    sys.stdout.write("Please be patient while the data files are being downloaded \n")
     sys.stdout.write("[")
     for i in range(size):
         if i < done_percentage/100*size:
@@ -62,11 +65,11 @@ def progress_bar(blocks_transfered, block_size, total_size):
     sys.stdout.write("] - ")
     sys.stdout.write(str(done_percentage).split('.')[0])
     sys.stdout.write("%")
+    sys.stdout.write("\n (the progress bar might be buggy)")
 
     # print(blocks_transfered * block_size)
     # print(block_size)
     # print(total_size)
-    os.system("cls") 
 
 def download_file(CURRENT_DATA_NAME):
     # response = urllib.request.urlopen(url)
@@ -97,7 +100,6 @@ def open_file(CURRENT_DATA_NAME):
             for line in file.readlines():
                 f.write(line)
         
-
 def read_json_data_from_file(f, CURRENT_DATA_NAME):
     RAW_FILE_JSON = json.loads(''.join(f.readlines()))
     for raw_line in RAW_FILE_JSON:
@@ -127,6 +129,8 @@ def read_json_data_from_file(f, CURRENT_DATA_NAME):
 def set_up(download=True):
     for CURRENT_DATA_NAME in FICHIERS.keys():
         DATA[CURRENT_DATA_NAME] = list()
+        if os.path.isfile(FICHIERS[package]["file_name"]):
+            print('File ' + str(FICHIERS[package]["file_name"]) + ' not found on disk.')
         if download and not os.path.isfile(FICHIERS[package]["file_name"]):
             download_file(CURRENT_DATA_NAME)
 
@@ -163,6 +167,21 @@ def drawDiagrams():
         DicPop[splt[0]] = splt[1]
 
     print(DicPop)
+
+def getGareByUIC(uic):
+    pass
+class Map():
+    def __init__(self, departements, gares, pertes):
+        pertesParDepartement = dict() # keys -> departements; value -> count des pertes
+
+        for perte in pertes:
+            gare = getGareByUIC(perte['uic'])
+            departement = DATA['x']
+    
+    def draw(self, ):
+        pass
+
+
 
 def isDepartementInRegion(departement,region):
     if not (region in DepInReg):

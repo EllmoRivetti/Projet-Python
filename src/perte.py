@@ -13,8 +13,11 @@ class Perte():
         compressed      = False
     )
 
-    def __init__(self, _date, _type, _uic):
-        self.date = _date
-        self.type = _type
-        self.uic  = _uic
+    def __init__(self):
+        # self.date
+        # self.type
+        # self.uic
+        self.set_up()
+
+        
         Pertes.DATA.append(self)

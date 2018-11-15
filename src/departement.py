@@ -10,7 +10,8 @@ class Departement():
         key_aliases = ["region_code","DepName"],
         critical_keys = ["region_code","name"],
         size = "9Ko",
-        compressed = {"name": "French-zip-code-3.0.0-JSON.zip", "path":["json"]},
+        archive_name = "French-zip-code-3.0.0-JSON.zip",
+        archive_path = ["json"]
     )
 
     def __init__(self,regionCode,name):

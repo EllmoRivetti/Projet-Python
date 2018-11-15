@@ -6,6 +6,11 @@ import os.path
 import zipfile
 import folium
 
+from src.departement import Departement
+from src.region import Region
+from src.gare import Gare
+from src.perte import Perte
+
 FICHIERS = {
     "LISTE_GARES" : {
         "url"                       : "https://data.sncf.com/explore/dataset/liste-des-gares/download/?format=json&timezone=Europe/Berlin",
@@ -162,9 +167,12 @@ def instantiateDict():
     print(DicPop)
 
     #Fill the DepInReg Dict
-    
-
-    
+    for reg in Region.DATA:
+        for dep in Departement.DATA:
+            if reg.code == dep.regionCode:
+                if not reg.name in DepInReg:
+                    DepInReg[reg.name] = list()
+                DepInReg[reg.name].append(dep.name) 
 
 def clean_up():
     for url_and_file_list in list(FICHIERS.values()):
@@ -182,15 +190,15 @@ def drawDiagrams():
 def getGareByUIC(uic):
     pass
 class Map():
-    def __init__(self, departements, gares, pertes):
-        pertesParDepartement = dict() # keys -> departements; value -> count des pertes
+    # def __init__(self, departements, gares, pertes):
+    #     pertesParDepartement = dict() # keys -> departements; value -> count des pertes
 
-        for perte in pertes:
-            gare = getGareByUIC(perte['uic'])
-            departement = DATA['x']
+    #     for perte in pertes:
+    #         gare = getGareByUIC(perte['uic'])
+    #         departement = DATA['x']
     
-    def draw(self, ):
-        pass
+    # def draw(self, ):
+    pass
 
 
 

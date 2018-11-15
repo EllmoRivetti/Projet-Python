@@ -1,6 +1,7 @@
 import sys
 import urllib.request
 import zipfile
+import os 
 
 class Tools:
 
@@ -34,7 +35,7 @@ class Tools:
         # binfile = open(filename, "wb")
         # binfile.write(html)
         # binfile.close()
-        urllib.request.urlretrieve(url, file_name, progress_bar)
+        urllib.request.urlretrieve(url, file_name, Tools.progress_bar)
 
     @staticmethod
     def open_file(file_name, archive_name='', path_in_archive=[]):

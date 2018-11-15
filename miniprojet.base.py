@@ -1,19 +1,36 @@
+# Extern libraries
 import json
 import os
 import os.path
 import folium
+import sys
+
+# Intern libraries
+from src.model.donnee import Donnee
+from src.model.departement import Departement
+from src.model.gare import Gare
+from src.model.perte import Perte
+from src.model.region import Region
+
+from src.tools import Tools
+
+from src.view.diagram import Diagram
+from src.view.map import Map
 
 DATA = dict()
 DepInReg = dict()
 DicPop = dict()
       
 
-def set_up(download=True):
-    
+def set_up():
+    Departement.set_up()
+    Gare.set_up()
+    Perte.set_up()
+    Region.set_up()
     instantiateDict()
 
 def instantiateDict():
-    #Fill the DicPop Dict
+    #Fill the DicPop Dictionnary
     f = open("pop.txt","r",encoding="utf-8")
     for line in f.readlines():
         splt = line.split(":")
@@ -22,10 +39,21 @@ def instantiateDict():
     print("DicPop: ")
     print(DicPop)
 
-    #Fill the DepInReg Dict
+    #Fill the DepInReg Dictionnary
+    for reg in Region.DATA:
+        for dep in Departement.DATA:
+            if reg.code == dep.regionCode:
+                if not reg.name in DepInReg:
+                    DepInReg[reg.name] = list()
+                DepInReg[reg.name].append(dep.name)
     
+    #Fill the DicNbObjPerYear Dictionnary
+    for obj in Perte.DATA:
+        date = obj.date.split(" ")[2]
+        if not date in DicNbObjPerYear:
+            DicNbObjPerYear[date] = 1
+        DicNbObjPerYear[date] += 1
 
-    
 
 def clean_up():
     for url_and_file_list in list(FICHIERS.values()):
@@ -35,25 +63,8 @@ def clean_up():
         except:
             pass
 
-def drawDiagrams():
-    #TODO Créer un dict pour stocker une list de departement pour chaque région. ex : {"Ile-de-France":["Paris","Yvelines",...]}
-    #TODO Créer un dict pour stocker la population pour chaque région. ex : {"Ile-de-France":12000000,...}
-    pass
-
 def getGareByUIC(uic):
     pass
-class Map():
-    def __init__(self, departements, gares, pertes):
-        pertesParDepartement = dict() # keys -> departements; value -> count des pertes
-
-        for perte in pertes:
-            gare = getGareByUIC(perte['uic'])
-            departement = DATA['x']
-    
-    def draw(self, ):
-        pass
-
-
 
 def isDepartementInRegion(departement,region):
     if not (region in DepInReg):
@@ -68,56 +79,33 @@ def getRegionForDepartement(departement):
     print("This departement doesn't exist")
 
 def main():
-    LISTE_GARES = DATA["LISTE_GARES"]
-    PERTES = DATA["PERTES"]
-    LISTE_DEPARTEMENTS = DATA["LISTE_DEPARTEMENTS"]
-    LISTE_REGIONS = DATA["LISTE_REGIONS"]
-
-
-
     print("\n--------\n")
     print("Nombre de gares: ", len(LISTE_GARES))
-    print("Informations des gares: ", list(LISTE_GARES[0].keys()))
-    print("Exemple: ", LISTE_GARES[0])
+    print("Informations des gares: ", Gare._meta.key_aliases)
+    print("Exemple: ", Gare.DATA[0])
 
     print("\n--------\n")
     print("Nombre de pertes: ", len(PERTES))
-    print("Informations des pertes: ", list(PERTES[0].keys()))
-    print("Exemple: ", PERTES[0])
+    print("Informations des pertes: ", Perte._meta.key_aliases)
+    print("Exemple: ", Perte.DATA[0])
 
     print("\n--------\n")
     print("Nombre de departements: ", len(LISTE_DEPARTEMENTS))
-    print("Informations des departements: ", list(LISTE_DEPARTEMENTS[0].keys()))
-    print("Exemple: ", LISTE_DEPARTEMENTS[0])
+    print("Informations des departements: ", Departement._meta.key_aliases)
+    print("Exemple: ", Departement.DATA[0])
 
     print("\n--------\n")
     print("Nombre de regions: ", len(LISTE_REGIONS))
-    print("Informations des regions: ", list(LISTE_REGIONS[0].keys()))
-    print("Exemple: ", LISTE_REGIONS[0])
+    print("Informations des regions: ", Region._meta.key_aliases)
+    print("Exemple: ", Region.DATA[0])
 
 if __name__ == '__main__':
-    download = False
     clean    = False
     for arg in sys.argv:
-        if arg in ["-d", "-download"]:
-            download = True
         if arg in ["-c", "-clean"]:
             clean = True
 
-    dataFilesNotOnDisk = True
-    for package in FICHIERS.keys():
-        if not os.path.isfile(FICHIERS[package]["file_name"]):
-            dataFilesNotOnDisk = False
-            print(str(FICHIERS[package]["file_name"]) + " not found on disk.")
-    if not dataFilesNotOnDisk:
-        print("You don't have all the data files. You need the data files in order for the program to work correctly. Do you agree to download them ? (yes/no)")
-        download = (str(input()).lower() == "yes")
-        if not download:
-            print("Exiting..")
-            exit()
-
-
-    set_up(download=download)
+    set_up()
     main()
     if clean:
         clean_up()

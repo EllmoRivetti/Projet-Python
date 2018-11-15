@@ -145,6 +145,22 @@ def set_up(download=True):
                 download_file(CURRENT_DATA_NAME)
                 f = open(FICHIERS[CURRENT_DATA_NAME]["file_name"])
                 read_json_data_from_file(f, CURRENT_DATA_NAME)
+    instantiateDict()
+
+def instantiateDict():
+    #Fill the DicPop Dict
+    f = open("pop.txt","r",encoding="utf-8")
+    for line in f.readlines():
+        splt = line.split(":")
+        DicPop[splt[0]] = (int) (splt[1].split("\n")[0])
+
+    print("DicPop: ")
+    print(DicPop)
+
+    #Fill the DepInReg Dict
+    
+
+    
 
 def clean_up():
     for url_and_file_list in list(FICHIERS.values()):
@@ -157,12 +173,7 @@ def clean_up():
 def drawDiagrams():
     #TODO Créer un dict pour stocker une list de departement pour chaque région. ex : {"Ile-de-France":["Paris","Yvelines",...]}
     #TODO Créer un dict pour stocker la population pour chaque région. ex : {"Ile-de-France":12000000,...}
-    f = open("pop.txt","r",encoding="utf-8")
-    for line in f.readlines():
-        splt = line.split(":")
-        DicPop[splt[0]] = splt[1]
-
-    print(DicPop)
+    pass
 
 def isDepartementInRegion(departement,region):
     if not (region in DepInReg):
@@ -181,6 +192,8 @@ def main():
     PERTES = DATA["PERTES"]
     LISTE_DEPARTEMENTS = DATA["LISTE_DEPARTEMENTS"]
     LISTE_REGIONS = DATA["LISTE_REGIONS"]
+
+
 
     print("\n--------\n")
     print("Nombre de gares: ", len(LISTE_GARES))

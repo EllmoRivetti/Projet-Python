@@ -6,10 +6,12 @@ import os.path
 import zipfile
 import folium
 
-from src.departement import Departement
-from src.region import Region
-from src.gare import Gare
-from src.perte import Perte
+from src.model.departement import Departement
+from src.model.region import Region
+from src.model.gare import Gare
+from src.model.perte import Perte
+from src.view import Map
+from src.view import Diagram
 
 FICHIERS = {
     "LISTE_GARES" : {
@@ -50,9 +52,10 @@ FICHIERS = {
     },
 }
 
-DATA = dict()
-DepInReg = dict()
-DicPop = dict()
+DATA = dict()               
+DepInReg = dict()           # ex : {"Ile-de-France":["Paris","Yvelines",...]}
+DicPop = dict()             # ex : {"Ile-de-France":12000000,...}
+DicNbObjPerYear = dict()    # ex : {2000:1220, 2001:1456, ..., 2018:122200}
 
 def progress_bar(blocks_transfered, block_size, total_size):
     import sys
@@ -157,7 +160,7 @@ def set_up(download=True):
     instantiateDict()
 
 def instantiateDict():
-    #Fill the DicPop Dict
+    #Fill the DicPop Dictionnary
     f = open("pop.txt","r",encoding="utf-8")
     for line in f.readlines():
         splt = line.split(":")
@@ -166,13 +169,21 @@ def instantiateDict():
     print("DicPop: ")
     print(DicPop)
 
-    #Fill the DepInReg Dict
+    #Fill the DepInReg Dictionnary
     for reg in Region.DATA:
         for dep in Departement.DATA:
             if reg.code == dep.regionCode:
                 if not reg.name in DepInReg:
                     DepInReg[reg.name] = list()
-                DepInReg[reg.name].append(dep.name) 
+                DepInReg[reg.name].append(dep.name)
+    
+    #Fill the DicNbObjPerYear Dictionnary
+    for obj in Perte.DATA:
+        date = obj.date.split(" ")[2]
+        if not date in DicNbObjPerYear:
+            DicNbObjPerYear[date] = 1
+        DicNbObjPerYear[date] += 1
+
 
 def clean_up():
     for url_and_file_list in list(FICHIERS.values()):
@@ -182,25 +193,8 @@ def clean_up():
         except:
             pass
 
-def drawDiagrams():
-    #TODO Créer un dict pour stocker une list de departement pour chaque région. ex : {"Ile-de-France":["Paris","Yvelines",...]}
-    #TODO Créer un dict pour stocker la population pour chaque région. ex : {"Ile-de-France":12000000,...}
-    pass
-
 def getGareByUIC(uic):
     pass
-class Map():
-    # def __init__(self, departements, gares, pertes):
-    #     pertesParDepartement = dict() # keys -> departements; value -> count des pertes
-
-    #     for perte in pertes:
-    #         gare = getGareByUIC(perte['uic'])
-    #         departement = DATA['x']
-    
-    # def draw(self, ):
-    pass
-
-
 
 def isDepartementInRegion(departement,region):
     if not (region in DepInReg):

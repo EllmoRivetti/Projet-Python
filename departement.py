@@ -1,3 +1,5 @@
+from src.donnee import Donnee
+
 class Departement(Donnee):
 
     DATA = list()
@@ -5,6 +7,6 @@ class Departement(Donnee):
     def __init__(self,regionCode,name):
         self.regionCode = regionCode
         self.name = name
-        
+
         Departement.DATA.append(self)
 

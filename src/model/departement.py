@@ -22,5 +22,5 @@ class Departement():
         src.model.departement.Departement.DATA.append(self)
 
     def __str__(self):
-        return "Nom: " + str(self.name) + ", region_code: " + str(self.region_code)
+        return "Departement: [ Nom: " + str(self.name) + ", region_code: " + str(self.region_code) + " ]"
 

@@ -18,6 +18,11 @@ class Gare():
         )
 
     def __init__(self):
+        self.departement = None
+        self.commune = None
+        self.uic = None
+        self.coordonnees = None
+        self.label = None
         Gare.DATA.append(self)
 
     def __str__(self):

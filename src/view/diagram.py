@@ -10,11 +10,12 @@ class Diagram:
         listeNb = list()
         listeBins = set()
         for year in self.nbLostObjPerYears.keys():
-            list.append(self.nbLostObjPerYears[year])
+            listeNb.append(self.nbLostObjPerYears[year])
             listeBins.add(year)
         
-        print("List nb: "+listeNb)
-        print("List years: "+listeBins)
+
+        print("List nb: ", listeNb)
+        print("List years: ", listeBins)
 
        
         plt.hist(listeNb, bin=listeBins)

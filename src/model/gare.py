@@ -18,3 +18,7 @@ class Gare():
 
     def __init__(self):
         Gare.DATA.append(self)
+
+        
+    def __str__(self):
+        return "Gare [ departement: " + str(self.name) + ", region_code: " + str(self.region_code) + " ]"

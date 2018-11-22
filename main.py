@@ -29,6 +29,8 @@ def set_up():
     Perte.set_up()
     Region.set_up()
     instantiateDict()
+    diagram = Diagram(DicNbObjPerYear)
+    diagram.drawDiagram()
 
 def instantiateDict():
     #Fill the DicPop Dictionnary
@@ -50,7 +52,7 @@ def instantiateDict():
     
     #Fill the DicNbObjPerYear Dictionnary
     for obj in Perte.DATA:
-        date = obj.date[0:5]
+        date = obj.date[0:4]
         if not date in DicNbObjPerYear:
             DicNbObjPerYear[date] = 1
         DicNbObjPerYear[date] += 1

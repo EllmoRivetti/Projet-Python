@@ -12,39 +12,40 @@ class Diagram:
         #for elem in nbLostObjPerYears:
 
         # print("Map nb lost: ", self.nbLostObjPerYears)
-        # for year in self.nbLostObjPerYears.keys():
-        #     listeBins.append(int(year))
-        #     listeNb.append()
-        # listeBins.sort();
-        listeBins=[2013,2014,2015,2016,2017,2018,2019]
-
-        count13 = 0
-        count14 = 0
-        count15 = 0
-        count16 = 0
-        count17 = 0
-        count18 = 0
-
         for elem in self.nbLostObjPerYears:
-            if elem == 2013:
-                count13+=1
-            elif elem == 2014:
-                count14+=1
-            elif elem == 2015:
-                count15+=1
-            elif elem == 2016:
-                count16+=1
-            elif elem == 2017:
-                count17+=1
-            elif elem == 2018:
-                count18+=1
+            if not elem in listeBins:
+                listeBins.append(elem)
+        listeBins.sort();
+        listeBins.append(max(listeBins)+1)
+        #listeBins=[2013,2014,2015,2016,2017,2018,2019]
 
-        print("2013: ",count13)
-        print("2014: ",count14)
-        print("2015: ",count15)
-        print("2016: ",count16)
-        print("2017: ",count17)
-        print("2018: ",count18)
+        # count13 = 0
+        # count14 = 0
+        # count15 = 0
+        # count16 = 0
+        # count17 = 0
+        # count18 = 0
+
+        # for elem in self.nbLostObjPerYears:
+        #     if elem == 2013:
+        #         count13+=1
+        #     elif elem == 2014:
+        #         count14+=1
+        #     elif elem == 2015:
+        #         count15+=1
+        #     elif elem == 2016:
+        #         count16+=1
+        #     elif elem == 2017:
+        #         count17+=1
+        #     elif elem == 2018:
+        #         count18+=1
+
+        # print("2013: ",count13)
+        # print("2014: ",count14)
+        # print("2015: ",count15)
+        # print("2016: ",count16)
+        # print("2017: ",count17)
+        # print("2018: ",count18)
 
         #print("List nb: ", self.nbLostObjPerYears)
         print("List years: ", listeBins)

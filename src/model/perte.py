@@ -18,6 +18,9 @@ class Perte():
         )
 
     def __init__(self):
+        self.date = None
+        self.type = None
+        self.uic = None
         Perte.DATA.append(self)
 
     def __str__(self):

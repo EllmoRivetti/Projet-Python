@@ -27,16 +27,7 @@ ListYears = list()
       
 
 def set_up():
-<<<<<<< HEAD
-    # Departement.set_up()
-    # Gare.set_up()
-    # Perte.set_up()
-    # Region.set_up()
-    # instantiateDict()
-    Map.draw()
-    # diagram = Diagram(DicNbObjPerYear)
-    # diagram.drawDiagram()
-=======
+
     Departement.set_up()
     Gare.set_up()
     Perte.set_up()
@@ -44,7 +35,6 @@ def set_up():
     instantiateDict()
     diagram = Diagram(ListNbObjLost)
     diagram.drawDiagram()
->>>>>>> 80de64d666c9233eadae5bf89d93977bb99e57a4
 
 def instantiateDict():
     #Fill the DicPop Dictionnary

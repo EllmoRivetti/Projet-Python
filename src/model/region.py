@@ -19,6 +19,8 @@ class Region:
         )
 
     def __init__(self):
+        self.name = None
+        self.code = None
         Region.DATA.append(self)
 
     def __str__(self):

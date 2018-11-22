@@ -16,9 +16,8 @@ class Diagram:
         print("List nb: "+listeNb)
         print("List years: "+listeBins)
 
+       
         plt.hist(listeNb, bin=listeBins)
-
-        n, bins, patches = plt.hist(x, bins=b)
 
         plt.xlabel('Années')
         plt.ylabel('Somme des objets perdus')

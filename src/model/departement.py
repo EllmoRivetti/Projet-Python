@@ -2,6 +2,7 @@ import src
 class Departement():
 
     DATA = list()
+    DepInReg = dict()
     _meta = None
 
     @staticmethod
@@ -19,8 +20,23 @@ class Departement():
         )
 
     def __init__(self):
+        self.name = None
+        self.region_code = None
         src.model.departement.Departement.DATA.append(self)
 
     def __str__(self):
         return "Departement: [ Nom: " + str(self.name) + ", region_code: " + str(self.region_code) + " ]"
 
+    @staticmethod
+    def isDepartementInRegion(departement,region):
+        if not (region in Departement.DepInReg):
+            print("This region doesn't exist")
+    
+        return departement in Departement.DepInReg[region]
+
+    @staticmethod
+    def getRegionForDepartement(departement):
+        for key in Departement.DepInReg.keys():
+            if Departement.isDepartementInRegion(departement,key):
+                return key
+        print("This departement doesn't exist")

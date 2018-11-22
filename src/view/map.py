@@ -13,9 +13,4 @@ class Map():
         center = [48.862, 2.346]
         paris = folium.Map(center, zoom_start=13)
         folium.Marker(center, popup='Les Halles').add_to(paris)
-        Map.display(paris)
         paris.save('results.html')
-
-    @staticmethod
-    def display(myMap):
-        pass

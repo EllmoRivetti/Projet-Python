@@ -17,6 +17,7 @@ from src.tools import Tools
 from src.view.diagram import Diagram
 from src.view.map import Map
 
+DEBUG = False
 DATA = dict()
 DepInReg = dict()
 DicPop = dict()
@@ -26,6 +27,16 @@ ListYears = list()
       
 
 def set_up():
+<<<<<<< HEAD
+    # Departement.set_up()
+    # Gare.set_up()
+    # Perte.set_up()
+    # Region.set_up()
+    # instantiateDict()
+    Map.draw()
+    # diagram = Diagram(DicNbObjPerYear)
+    # diagram.drawDiagram()
+=======
     Departement.set_up()
     Gare.set_up()
     Perte.set_up()
@@ -33,6 +44,7 @@ def set_up():
     instantiateDict()
     diagram = Diagram(ListNbObjLost)
     diagram.drawDiagram()
+>>>>>>> 80de64d666c9233eadae5bf89d93977bb99e57a4
 
 def instantiateDict():
     #Fill the DicPop Dictionnary
@@ -85,25 +97,26 @@ def getRegionForDepartement(departement):
     print("This departement doesn't exist")
 
 def main():
-    print("\n--------\n")
-    print("Nombre de gares: ", len(Gare.DATA))
-    print("Informations des gares: ", Gare._meta.key_aliases)
-    print("Exemple: " + str(Gare.DATA[0]))
+    if DEBUG:
+        print("\n--------\n")
+        print("Nombre de gares: ", len(Gare.DATA))
+        print("Informations des gares: ", Gare._meta.key_aliases)
+        print("Exemple: " + str(Gare.DATA[0]))
 
-    print("\n--------\n")
-    print("Nombre de pertes: ", len(Perte.DATA))
-    print("Informations des pertes: ", Perte._meta.key_aliases)
-    print("Exemple: ", Perte.DATA[0])
+        print("\n--------\n")
+        print("Nombre de pertes: ", len(Perte.DATA))
+        print("Informations des pertes: ", Perte._meta.key_aliases)
+        print("Exemple: ", Perte.DATA[0])
 
-    print("\n--------\n")
-    print("Nombre de departements: ", len(Departement.DATA))
-    print("Informations des departements: ", Departement._meta.key_aliases)
-    print("Exemple: ", Departement.DATA[0])
+        print("\n--------\n")
+        print("Nombre de departements: ", len(Departement.DATA))
+        print("Informations des departements: ", Departement._meta.key_aliases)
+        print("Exemple: ", Departement.DATA[0])
 
-    print("\n--------\n")
-    print("Nombre de regions: ", len(Region.DATA))
-    print("Informations des regions: ", Region._meta.key_aliases)
-    print("Exemple: ", Region.DATA[0])
+        print("\n--------\n")
+        print("Nombre de regions: ", len(Region.DATA))
+        print("Informations des regions: ", Region._meta.key_aliases)
+        print("Exemple: ", Region.DATA[0])
 
 if __name__ == '__main__':
     clean    = False

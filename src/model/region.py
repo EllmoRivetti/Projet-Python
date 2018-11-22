@@ -21,3 +21,5 @@ class Region:
     def __init__(self):
         Region.DATA.append(self)
 
+    def __str__(self):
+        return "Perte: [ name: " + str(self.name) + ", code: " + str(self.code) + " ]"

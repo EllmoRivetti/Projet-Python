@@ -19,3 +19,6 @@ class Perte():
 
     def __init__(self):
         Perte.DATA.append(self)
+
+    def __str__(self):
+        return "Perte: [ date: " + str(self.date) + ", type: " + str(self.type) + ", uic: " + str(self.uic) + " ]"

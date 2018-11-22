@@ -13,6 +13,15 @@ class Diagram:
             list.append(self.nbLostObjPerYears[year])
             listeBins.add(year)
         
+        print("List nb: "+listeNb)
+        print("List years: "+listeBins)
+
+       
         plt.hist(listeNb, bin=listeBins)
 
+        plt.xlabel('Années')
+        plt.ylabel('Somme des objets perdus')
+        plt.title("Nombre d'objet perdus dans les gares SNCF de 2014 à 2018")
+
+        plt.show()
         #TODO APPEL DANS LE MAIN

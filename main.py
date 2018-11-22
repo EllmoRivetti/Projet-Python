@@ -18,10 +18,8 @@ from src.view.diagram import Diagram
 from src.view.map import Map
 
 DEBUG = False
-DATA = dict()
 DicPop = dict()
-ListNbObjLost = list()
-ListYears = list()
+ListNbObjLostPerYear = list()
       
 
 def set_up():
@@ -31,7 +29,7 @@ def set_up():
     Perte.set_up()
     Region.set_up()
     instantiateCollections()
-    diagram = Diagram(ListNbObjLost)
+    diagram = Diagram(ListNbObjLostPerYear)
     diagram.drawDiagram()
 
 def instantiateCollections():
@@ -55,16 +53,19 @@ def instantiateCollections():
     #Fill the DicNbObjPerYear Dictionnary
     for obj in Perte.DATA:
         date = obj.date[0:4]
-        ListNbObjLost.append(int(date))
+        ListNbObjLostPerYear.append(int(date))
 
 
-# def clean_up():
-#     for url_and_file_list in list(FICHIERS.values()):
-#         file = url_and_file_list["file_name"] 
-#         try:
-#             os.remove(file)
-#         except:
-#             pass
+def clean_up():
+    folder = Donnee.DATA_FOLDER
+    for the_file in os.listdir(folder):
+        file_path = os.path.join(folder, the_file)
+        try:
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+            #elif os.path.isdir(file_path): shutil.rmtree(file_path)
+        except Exception as e:
+            print(e)
 
 def getGareByUIC(uic):
     pass
@@ -94,10 +95,14 @@ def main():
 if __name__ == '__main__':
     clean    = False
     for arg in sys.argv:
-        if arg in ["-c", "-clean"]:
+        if arg in ["--c", "--clean"]:
             clean = True
 
-    set_up()
-    main()
-    # if clean:
-    #     clean_up()
+    if clean:
+        clean_up()
+        print("Succesfully deleted data folder !")
+    else:
+        print("Launching Program")
+        set_up()
+        main()
+    

@@ -19,9 +19,7 @@ from src.view.map import Map
 
 DEBUG = False
 DATA = dict()
-DepInReg = dict()
 DicPop = dict()
-DicNbObjPerYear = dict()
 ListNbObjLost = list()
 ListYears = list()
       
@@ -32,11 +30,11 @@ def set_up():
     Gare.set_up()
     Perte.set_up()
     Region.set_up()
-    instantiateDict()
+    instantiateCollections()
     diagram = Diagram(ListNbObjLost)
     diagram.drawDiagram()
 
-def instantiateDict():
+def instantiateCollections():
     #Fill the DicPop Dictionnary
     f = open("pop.txt","r",encoding="utf-8")
     for line in f.readlines():
@@ -46,21 +44,18 @@ def instantiateDict():
     print("DicPop: ")
     print(DicPop)
 
-    #Fill the DepInReg Dictionnary
+    #Fill the Departement.DepInReg Dictionnary
     for reg in Region.DATA:
         for dep in Departement.DATA:
             if reg.code == dep.region_code:
-                if not reg.name in DepInReg:
-                    DepInReg[reg.name] = list()
-                DepInReg[reg.name].append(dep.name)
+                if not reg.name in Departement.DepInReg:
+                    Departement.DepInReg[reg.name] = list()
+                Departement.DepInReg[reg.name].append(dep.name)
     
     #Fill the DicNbObjPerYear Dictionnary
     for obj in Perte.DATA:
         date = obj.date[0:4]
         ListNbObjLost.append(int(date))
-        if not date in DicNbObjPerYear:
-            DicNbObjPerYear[date] = 1
-        DicNbObjPerYear[date] += 1
 
 
 # def clean_up():
@@ -73,18 +68,6 @@ def instantiateDict():
 
 def getGareByUIC(uic):
     pass
-
-def isDepartementInRegion(departement,region):
-    if not (region in DepInReg):
-        print("This region doesn't exist")
-    
-    return departement in DepInReg[region]
-
-def getRegionForDepartement(departement):
-    for key in DepInReg.keys():
-        if isDepartementInRegion(departement,key):
-            return key
-    print("This departement doesn't exist")
 
 def main():
     if DEBUG:

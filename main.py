@@ -22,9 +22,12 @@ DATA = dict()
 DepInReg = dict()
 DicPop = dict()
 DicNbObjPerYear = dict()
+ListNbObjLost = list()
+ListYears = list()
       
 
 def set_up():
+<<<<<<< HEAD
     # Departement.set_up()
     # Gare.set_up()
     # Perte.set_up()
@@ -33,6 +36,15 @@ def set_up():
     Map.draw()
     # diagram = Diagram(DicNbObjPerYear)
     # diagram.drawDiagram()
+=======
+    Departement.set_up()
+    Gare.set_up()
+    Perte.set_up()
+    Region.set_up()
+    instantiateDict()
+    diagram = Diagram(ListNbObjLost)
+    diagram.drawDiagram()
+>>>>>>> 80de64d666c9233eadae5bf89d93977bb99e57a4
 
 def instantiateDict():
     #Fill the DicPop Dictionnary
@@ -55,6 +67,7 @@ def instantiateDict():
     #Fill the DicNbObjPerYear Dictionnary
     for obj in Perte.DATA:
         date = obj.date[0:4]
+        ListNbObjLost.append(int(date))
         if not date in DicNbObjPerYear:
             DicNbObjPerYear[date] = 1
         DicNbObjPerYear[date] += 1

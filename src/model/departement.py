@@ -19,6 +19,8 @@ class Departement():
         )
 
     def __init__(self):
+        self.name = None
+        self.region_code = None
         src.model.departement.Departement.DATA.append(self)
 
     def __str__(self):

@@ -37,10 +37,24 @@ class Tools:
         # binfile.close()
         urllib.request.urlretrieve(url, file_name, Tools.progress_bar)
 
+
     @staticmethod
-    def open_file(file_name, archive_name='', path_in_archive=[]):
+    def extract_file_from_archive(file_name, archive_name, archive_path, directory_name=''):
+        archive = zipfile.ZipFile(archive_name, 'r')
+        path = []
+        path.extend(archive_path)
+        path.append(file_name)
+        path_to_file = os.path.join(*path)
+        path_to_file = path_to_file.replace('\\', '/')
+        file = archive.open(path_to_file)
+        with open(os.path.join(directory_name, file_name), 'wb') as destination_file:
+            for line in file.readlines():
+                destination_file.write(line)
+
+    @staticmethod
+    def open_file(file_name, directory_name='', archive_name='', path_in_archive=[]):
         try:
-            return open(file_name)
+            return open(os.path.abspath(os.path.join(directory_name, file_name)))
         except:
             archive = zipfile.ZipFile(archive_name, 'r')
             path = []

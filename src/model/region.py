@@ -6,7 +6,7 @@ class Region:
 
     @staticmethod
     def set_up():
-        _meta = Donnee(
+        Region._meta = Donnee(
             url             = "https://www.data.gouv.fr/fr/datasets/r/5c219016-1eaf-41dc-9bba-2f32dfb71b72",
             file_name       = "regions.json",
             keys            = ["code","name"],

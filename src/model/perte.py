@@ -6,7 +6,7 @@ class Perte():
 
     @staticmethod
     def set_up():
-        _meta = Donnee(
+        Perte._meta = Donnee(
             url             = "https://data.sncf.com/explore/dataset/objets-trouves-gares/download/?format=json&timezone=Europe/Berlin", 
             #si vous telechargez ce fichier manuellement veuillez le renommer en "pertes.json"
             file_name       = "pertes.json",
@@ -14,9 +14,8 @@ class Perte():
             key_aliases     = ["date", "type", "uic",], 
             critical_keys   = ["gc_obo_gare_origine_r_code_uic_c",], 
             size            = "330MB",
-            compressed      = False,
             parent_class    = "perte"
         )
 
     def __init__(self):
-        Pertes.DATA.append(self)
+        Perte.DATA.append(self)

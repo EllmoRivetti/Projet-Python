@@ -2,10 +2,14 @@ import os
 import os.path 
 from src.tools import Tools 
 import json
+import sys
+import src
 
 #TODO make the data files path relative to a data folder. 
 
 class Donnee:
+    DATA_FOLDER = 'data'
+
     def __init__(self, url, file_name, keys, key_aliases, parent_class, critical_keys='all', size='undefined', archive_name='none', archive_path=[]):
         self.url            = url
         self.file_name      = file_name
@@ -23,27 +27,36 @@ class Donnee:
         self.set_up()
 
     def set_up(self):
-        if os.path.isfile(self.file_name):
+        if not os.path.isfile(os.path.join(Donnee.DATA_FOLDER, self.file_name)):
             print('File ' + str(self.file_name) + ' not found on disk.')
-        if not os.path.isfile(self.file_name):
-            Tools.download_file(self.url, self.file_name)
-
-        f = Tools.open_file(self.file_name, self.archive_name, self.archive_path)
-        try:
-            print(file_name)
-            self.read_json_data_from_file(f)
-        except:
-            print("You don't have the data file ", self.file_name, " or this file is corrupted. Do you agree to download this file (Approximative size: ", self.size, " ? (yes/no)")
-            download = (str(input()).lower() == "yes")
-            if not download:
-                print("Exiting..")
-                exit()
+            if self.archive_name == 'none':
+                print("Directly downloadign file " + str(self.file_name))
+                Tools.download_file(self.url, os.path.join(Donnee.DATA_FOLDER, self.file_name))
             else:
-                Tools.download_file(self.url, self.file_name)
-                f = Tools.open_file(self.file_name, self.archive_name, self.archive_path)
-                self.read_json_data_from_file(f)
+                print("Downloading archive " + str(self.archive_name))
+                Tools.download_file(self.url, self.archive_name)
+                print("Extracting archive " + str(self.file_name))
+                Tools.extract_file_from_archive(self.file_name, self.archive_name, self.archive_path, Donnee.DATA_FOLDER)
+                
+
+        f = Tools.open_file(self.file_name, Donnee.DATA_FOLDER, self.archive_name, self.archive_path)
+        
+        # try:
+        self.read_json_data_from_file(f)
+        print("Succesfully read data from " + str(self.file_name))
+        # except:
+            # print("You don't have the data file ", self.file_name, " or this file is corrupted. Do you agree to download this file (Approximative size: ", self.size, " ? (yes/no)")
+            # download = (str(input()).lower() == "yes")
+            # if not download:
+            #     print("Exiting..")
+            #     exit()
+            # else:
+            #     Tools.download_file(self.url, os.path.join(Donnee.DATA_FOLDER, self.file_name))
+            #     f = Tools.open_file(os.path.join(Donnee.DATA_FOLDER, self.file_name), self.archive_name, self.archive_path)
+            #     self.read_json_data_from_file(f)
 
     def read_json_data_from_file(self, f):
+        constructor = None
         RAW_FILE_JSON = json.loads(''.join(f.readlines()))
         for raw_line in RAW_FILE_JSON:
             line = raw_line
@@ -57,15 +70,16 @@ class Donnee:
 
             if all_critical_keys_in_entry:
 
-                instance = None
                 if self.parent_class == "departement":
-                    instance = Departement()
+                    constructor = src.model.departement.Departement
                 elif self.parent_class == "region":
-                    instance = Region()
+                    constructor = src.model.region.Region
                 elif self.parent_class == "perte":
-                    instance = Perte()
+                    constructor = src.model.perte.Perte
                 elif self.parent_class == "gare":
-                    instance = Gare()
+                    constructor = src.model.gare.Gare
+                    
+                instance = constructor()
                 
                 for key, value in line.items():
                     if key in self.keys:

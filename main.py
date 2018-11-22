@@ -20,6 +20,7 @@ from src.view.map import Map
 DATA = dict()
 DepInReg = dict()
 DicPop = dict()
+DicNbObjPerYear = dict()
       
 
 def set_up():

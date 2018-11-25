@@ -17,7 +17,7 @@ class Donnee:
         self.key_aliases    = key_aliases
         self.critical_keys  = critical_keys
         if critical_keys == 'all':
-            self.critical_keys = data_keys
+            self.critical_keys = self.keys
         self.size           = size
         self.compressed     = not archive_name == 'none'
         self.archive_name   = archive_name
@@ -38,22 +38,21 @@ class Donnee:
                 print("Extracting archive " + str(self.file_name))
                 Tools.extract_file_from_archive(self.file_name, self.archive_name, self.archive_path, Donnee.DATA_FOLDER)
                 
-
         f = Tools.open_file(self.file_name, Donnee.DATA_FOLDER, self.archive_name, self.archive_path)
         
-        # try:
-        self.read_json_data_from_file(f)
-        print("Succesfully read data from " + str(self.file_name))
-        # except:
-            # print("You don't have the data file ", self.file_name, " or this file is corrupted. Do you agree to download this file (Approximative size: ", self.size, " ? (yes/no)")
-            # download = (str(input()).lower() == "yes")
-            # if not download:
-            #     print("Exiting..")
-            #     exit()
-            # else:
-            #     Tools.download_file(self.url, os.path.join(Donnee.DATA_FOLDER, self.file_name))
-            #     f = Tools.open_file(os.path.join(Donnee.DATA_FOLDER, self.file_name), self.archive_name, self.archive_path)
-            #     self.read_json_data_from_file(f)
+        try:
+            self.read_json_data_from_file(f)
+            print("Succesfully read data from " + str(self.file_name))
+        except:
+            print("You don't have the data file ", self.file_name, " or this file is corrupted. Do you agree to download this file (Approximative size: ", self.size, " ? (yes/no)")
+            download = (str(input()).lower() == "yes")
+            if not download:
+                print("Exiting..")
+                exit()
+            else:
+                Tools.download_file(self.url, os.path.join(Donnee.DATA_FOLDER, self.file_name))
+                f = Tools.open_file(os.path.join(Donnee.DATA_FOLDER, self.file_name), self.archive_name, self.archive_path)
+                self.read_json_data_from_file(f)
 
     def read_json_data_from_file(self, f):
         constructor = None

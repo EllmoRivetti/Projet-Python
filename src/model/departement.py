@@ -31,12 +31,23 @@ class Departement():
     def isDepartementInRegion(departement,region):
         if not (region in Departement.DepInReg):
             print("This region doesn't exist")
-    
-        return departement in Departement.DepInReg[region]
+            print(departement)
+            print(region)
+        for entry in Departement.DepInReg[region]:
+            if src.tools.Tools.strip_accents(entry) == src.tools.Tools.strip_accents(departement):
+                return True
+        return False
 
     @staticmethod
     def getRegionForDepartement(departement):
         for key in Departement.DepInReg.keys():
             if Departement.isDepartementInRegion(departement,key):
-                return key
-        print("This departement doesn't exist")
+                return src.model.region.Region.getRegionByName(key)
+        return None
+
+    @staticmethod
+    def getDepartementByName(name):
+        for entry in Departement.DATA:
+            if name == entry.name:
+                return entry
+        return None

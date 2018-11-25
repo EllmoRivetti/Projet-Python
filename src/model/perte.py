@@ -3,7 +3,8 @@ from src.model.donnee import Donnee
 class Perte():
     DATA = list()
     _meta = None
-
+    tries = dict()
+    
     @staticmethod
     def set_up():
         Perte._meta = Donnee(

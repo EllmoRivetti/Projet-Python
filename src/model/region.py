@@ -25,3 +25,10 @@ class Region:
 
     def __str__(self):
         return "Perte: [ name: " + str(self.name) + ", code: " + str(self.code) + " ]"
+
+    @staticmethod
+    def getRegionByName(name):
+        for entry in Region.DATA:
+            if name == entry.name:
+                return entry
+        return None

@@ -27,3 +27,10 @@ class Gare():
 
     def __str__(self):
         return "Gare: [ departement: " + str(self.departement) + ", commune: " + str(self.commune) + ", uic: " + str(self.uic) + ", coordonnees: " + str(self.coordonnees) + ", label: " + str(self.label) + " ]"
+
+    @staticmethod
+    def getGareByUIC(uic):
+        for entry in Gare.DATA:
+            if entry.uic == uic:
+                return entry
+        return None

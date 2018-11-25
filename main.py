@@ -18,9 +18,9 @@ from src.view.diagram import Diagram
 from src.view.map import Map
 
 DEBUG = False
+Annees = [2014, 2015, 2016, 2017, 2018]
 DicPop = dict()
 ListNbObjLostPerYear = list()
-      
 
 def set_up():
     Departement.set_up()
@@ -30,7 +30,7 @@ def set_up():
     instantiateCollections()
     # diagram = Diagram(ListNbObjLostPerYear)
     # diagram.drawDiagram()
-    Map.draw()
+    
 
 def instantiateCollections():
     #Fill the DicPop Dictionnary
@@ -38,10 +38,7 @@ def instantiateCollections():
     for line in f.readlines():
         splt = line.split(":")
         DicPop[splt[0]] = (int) (splt[1].split("\n")[0])
-
-    print("DicPop: ")
-    print(DicPop)
-
+        
     #Fill the Departement.DepInReg Dictionnary
     for reg in Region.DATA:
         for dep in Departement.DATA:
@@ -55,6 +52,76 @@ def instantiateCollections():
         date = obj.date[0:4]
         ListNbObjLostPerYear.append(int(date))
 
+    # PertesParRegion/Departement
+    departements_inconnus = list()
+    pertes_ignores = 0
+
+        # instantiating all data
+    for region in Region.DATA:
+        Perte.tries[region.name] = dict()
+        
+        for departement in Departement.DATA:
+            if Departement.isDepartementInRegion(departement.name, region.name):
+                Perte.tries[region.name][departement.name] = dict()
+                for annee in Annees:
+                    Perte.tries[region.name][departement.name][annee] = 0
+
+        Perte.tries[region.name]['all'] = dict()
+        for annee in Annees:
+            Perte.tries[region.name]['all'][annee] = 0
+
+    gareByUic = dict()
+    for gare in Gare.DATA:
+        gareByUic[gare.uic] = gare
+    #more efficient than a getGareByUic since we don't loop over gares for all pertes.
+
+    i = 0
+    for perte in Perte.DATA:
+        i += 1
+        perte_progress_bar(i, len(Perte.DATA))
+        for annee in Annees:
+            if str(perte.date[0:4]) == str(annee):
+                if perte.uic in gareByUic:
+                    gare =  gareByUic[perte.uic]
+                    if gare:
+                        departement = Departement.getDepartementByName(gare.departement)
+                        if departement:
+                            region = Departement.getRegionForDepartement(departement.name) 
+                            Perte.tries[region.name]['all'][annee] += 1
+                            Perte.tries[region.name][departement.name][annee] += 1
+                        else:
+                            if not gare.departement in departements_inconnus:
+                                departements_inconnus.append(gare.departement)
+                    else:
+                        pertes_ignores += 1
+    
+    if pertes_ignores > 0:
+        print('Failed to retrieve information from', pertes_ignores, 'pertes ! (there are', len(Perte.DATA), ' pertes)')
+    else:
+        print('All the pertes have been treated.')
+    if len(departements_inconnus) > 0:
+        print('There are ', len(departements_inconnus), ' unknown departements !')
+        print(departements_inconnus) 
+    if DEBUG:
+        print('\n##############')
+        print(Perte.tries)
+    Map.draw(Perte.tries, 2018)
+
+def perte_progress_bar(blocks_transfered, total_size):
+    if blocks_transfered % int(total_size / 100) == 0:
+        progress_bar_size = 20
+        done_percentage = (blocks_transfered/total_size) * 100
+        sys.stdout.write("Computing losses by regions and departements... ")
+        sys.stdout.write("[")
+        for i in range(progress_bar_size):
+            if i < done_percentage/100*progress_bar_size:
+                sys.stdout.write("-")
+            else:
+                sys.stdout.write(" ")
+        sys.stdout.write("] - ")
+        sys.stdout.write(str(done_percentage).split('.')[0])
+        sys.stdout.write("% \r")
+
 
 def clean_up():
     folder = Donnee.DATA_FOLDER
@@ -66,9 +133,6 @@ def clean_up():
             #elif os.path.isdir(file_path): shutil.rmtree(file_path)
         except Exception as e:
             print(e)
-
-def getGareByUIC(uic):
-    pass
 
 def main():
     if DEBUG:
@@ -93,6 +157,7 @@ def main():
         print("Exemple: ", Region.DATA[0])
 
 if __name__ == '__main__':
+    os.system('cls')
     clean    = False
     for arg in sys.argv:
         if arg in ["--c", "--clean"]:

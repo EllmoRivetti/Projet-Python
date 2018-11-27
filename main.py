@@ -75,10 +75,13 @@ def instantiateCollections():
         gareByUic[gare.uic] = gare
     #more efficient than a getGareByUic since we don't loop over gares for all pertes.
 
+
+    for dep in Departement.DATA:
+        print(dep.code)
     i = 0
     for perte in Perte.DATA:
         i += 1
-        perte_progress_bar(i, len(Perte.DATA))
+        Tools.global_progress_bar(i, len(Perte.DATA))
         for annee in Annees:
             if str(perte.date[0:4]) == str(annee):
                 if perte.uic in gareByUic:
@@ -107,20 +110,7 @@ def instantiateCollections():
         print(Perte.tries)
     Map.draw(Perte.tries, 2018)
 
-def perte_progress_bar(blocks_transfered, total_size):
-    if blocks_transfered % int(total_size / 100) == 0:
-        progress_bar_size = 20
-        done_percentage = (blocks_transfered/total_size) * 100
-        sys.stdout.write("Computing losses by regions and departements... ")
-        sys.stdout.write("[")
-        for i in range(progress_bar_size):
-            if i < done_percentage/100*progress_bar_size:
-                sys.stdout.write("-")
-            else:
-                sys.stdout.write(" ")
-        sys.stdout.write("] - ")
-        sys.stdout.write(str(done_percentage).split('.')[0])
-        sys.stdout.write("% \r")
+
 
 
 def clean_up():

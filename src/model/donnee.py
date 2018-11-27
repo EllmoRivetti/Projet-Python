@@ -57,7 +57,10 @@ class Donnee:
     def read_json_data_from_file(self, f):
         constructor = None
         RAW_FILE_JSON = json.loads(''.join(f.readlines()))
+        # i = 0
         for raw_line in RAW_FILE_JSON:
+            # Tools.global_progress_bar(i, len(RAW_FILE_JSON))
+            # i+=1
             line = raw_line
             if 'fields' in raw_line:
                 line = raw_line['fields']

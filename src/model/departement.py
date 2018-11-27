@@ -10,9 +10,9 @@ class Departement():
         Departement._meta = src.model.donnee.Donnee(
             url             = "https://www.data.gouv.fr/fr/datasets/r/5c219016-1eaf-41dc-9bba-2f32dfb71b72",
             file_name       = "departments.json",
-            keys            = ["region_code","name"],
-            key_aliases     = ["region_code","name"],
-            critical_keys   = ["region_code","name"],
+            keys            = ["region_code","code","name"],
+            key_aliases     = ["region_code","code","name"],
+            critical_keys   = ["region_code","code","name"],
             size            = "9Ko",
             archive_name    = "French-zip-code-3.0.0-JSON.zip",
             archive_path    = ["json"],
@@ -22,6 +22,7 @@ class Departement():
     def __init__(self):
         self.name = None
         self.region_code = None
+        self.code = None
         src.model.departement.Departement.DATA.append(self)
 
     def __str__(self):
@@ -47,7 +48,9 @@ class Departement():
 
     @staticmethod
     def getDepartementByName(name):
-        for entry in Departement.DATA:
-            if name == entry.name:
-                return entry
+        if name:
+            for entry in Departement.DATA:
+                if src.tools.Tools.strip_accents(name) == src.tools.Tools.strip_accents(entry.name):
+                    return entry
         return None
+

@@ -11,6 +11,22 @@ class Tools:
     percentage = 0
 
     @staticmethod
+    def global_progress_bar(blocks_transfered, total_size):
+        if blocks_transfered % int(total_size / 100) == 0:
+            progress_bar_size = 20
+            done_percentage = (blocks_transfered/total_size) * 100
+            sys.stdout.write("Computing losses by regions and departements... ")
+            sys.stdout.write("[")
+            for i in range(progress_bar_size):
+                if i < done_percentage/100*progress_bar_size:
+                    sys.stdout.write("-")
+                else:
+                    sys.stdout.write(" ")
+            sys.stdout.write("] - ")
+            sys.stdout.write(str(done_percentage).split('.')[0])
+            sys.stdout.write("% \r")
+
+    @staticmethod
     def strip_accents(text):
         """
         Strip accents from input String.

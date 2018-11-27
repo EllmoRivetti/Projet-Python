@@ -175,4 +175,3 @@ if __name__ == '__main__':
         set_up()
         main()
     set_up_end_environment()
-    

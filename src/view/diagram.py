@@ -13,8 +13,9 @@ class Diagram:
 
         # print("Map nb lost: ", self.nbLostObjPerYears)
         for elem in self.nbLostObjPerYears:
-            if not elem in listeBins:
-                listeBins.append(elem)
+            if not elem == 2013: # les données de 2013 étant entrée vers la fin d'année, par conséquent elles ne sont pas cohérentes
+                if not elem in listeBins:
+                    listeBins.append(elem)
         listeBins.sort();
         listeBins.append(max(listeBins)+1)
         #listeBins=[2013,2014,2015,2016,2017,2018,2019]

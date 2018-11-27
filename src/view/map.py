@@ -16,7 +16,7 @@ class Map():
     
     @staticmethod
     def parseData(pertes, annee):
-        file_path = os.path.join('data','departement.json')
+        file_path = os.path.join('data','departement.geojson')
         Tools.download_file(geojson['departement'], file_path)
         RAW_FILE_GEOJSON = None
         with open(file_path, 'r') as f:

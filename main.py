@@ -28,8 +28,8 @@ def set_up():
     Perte.set_up()
     Region.set_up()
     instantiateCollections()
-    # diagram = Diagram(ListNbObjLostPerYear)
-    # diagram.drawDiagram()
+    diagram = Diagram(ListNbObjLostPerYear)
+    diagram.drawDiagram()
     
 
 def instantiateCollections():

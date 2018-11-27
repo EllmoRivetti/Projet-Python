@@ -15,6 +15,7 @@ class Tools:
         if blocks_transfered % int(total_size / 100) == 0:
             progress_bar_size = 20
             done_percentage = (blocks_transfered/total_size) * 100
+            sys.stdout.write("\r")
             sys.stdout.write(message)
             sys.stdout.write("[")
             for i in range(progress_bar_size):
@@ -24,7 +25,7 @@ class Tools:
                     sys.stdout.write(" ")
             sys.stdout.write("] - ")
             sys.stdout.write(str(done_percentage).split('.')[0])
-            sys.stdout.write("% \r")
+            sys.stdout.write("%")
 
     @staticmethod
     def strip_accents(text):

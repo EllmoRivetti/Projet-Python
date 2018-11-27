@@ -1,4 +1,5 @@
 # Extern libraries
+from subprocess import call
 import json
 import os
 import os.path
@@ -28,8 +29,10 @@ def set_up():
     Perte.set_up()
     Region.set_up()
     instantiateCollections()
-    # diagram = Diagram(ListNbObjLostPerYear)
-    # diagram.drawDiagram()
+    
+    Map.draw(Perte.tries, 2018)
+    diagram = Diagram(ListNbObjLostPerYear)
+    diagram.drawDiagram()
     
 
 def instantiateCollections():
@@ -105,7 +108,6 @@ def instantiateCollections():
     if DEBUG:
         print('\n##############')
         print(Perte.tries)
-    Map.draw(Perte.tries, 2018)
 
 
 
@@ -143,12 +145,27 @@ def main():
         print("Informations des regions: ", Region._meta.key_aliases)
         print("Exemple: ", Region.DATA[0])
 
+def set_up_environment():
+    with open("requirements.txt") as f:
+        for line in f.readlines():
+            call(['pip', 'install', line])
+            os.system('cls')
+
+def set_up_end_environment():
+    with open("requirements.txt") as f:
+        for line in f.readlines():
+            call(['pip', 'install', str(line).split('==')[0]])
+
+
 if __name__ == '__main__':
     os.system('cls')
+    set_up_environment()
     clean    = False
     for arg in sys.argv:
         if arg in ["--c", "--clean"]:
             clean = True
+
+    
 
     if clean:
         clean_up()
@@ -157,4 +174,5 @@ if __name__ == '__main__':
         print("Launching Program")
         set_up()
         main()
+    set_up_end_environment()
     

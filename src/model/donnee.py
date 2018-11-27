@@ -27,6 +27,7 @@ class Donnee:
         self.set_up()
 
     def set_up(self):
+        print('Setting up', self.parent_class)
         if not os.path.isfile(os.path.join(Donnee.DATA_FOLDER, self.file_name)):
             print('File ' + str(self.file_name) + ' not found on disk.')
             if self.archive_name == 'none':
@@ -53,11 +54,13 @@ class Donnee:
                 Tools.download_file(self.url, os.path.join(Donnee.DATA_FOLDER, self.file_name))
                 f = Tools.open_file(os.path.join(Donnee.DATA_FOLDER, self.file_name), self.archive_name, self.archive_path)
                 self.read_json_data_from_file(f)
+        print('#########################\n')
 
     def read_json_data_from_file(self, f):
         constructor = None
         RAW_FILE_JSON = json.loads(''.join(f.readlines()))
         # i = 0
+        ignores = 0
         for raw_line in RAW_FILE_JSON:
             # Tools.global_progress_bar(i, len(RAW_FILE_JSON))
             # i+=1
@@ -93,3 +96,6 @@ class Donnee:
                             setattr(instance, alias, value)
                         except TypeError:
                             setattr(instance, alias, value)
+            else:
+                ignores += 1
+        # print(ignores, "/", len(RAW_FILE_JSON), "rows have been ignored since they didn't contain all the required fields.")

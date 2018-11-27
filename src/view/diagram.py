@@ -48,7 +48,7 @@ class Diagram:
         # print("2018: ",count18)
 
         #print("List nb: ", self.nbLostObjPerYears)
-        print("List years: ", listeBins)
+        # print("List years: ", listeBins)
 
         plt.hist(self.nbLostObjPerYears ,bins= listeBins,
             edgecolor = 'black')

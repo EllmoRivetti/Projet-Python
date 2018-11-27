@@ -16,7 +16,7 @@ class Map():
     
     @staticmethod
     def parseData(pertes, annee):
-        file_path = os.path.join('data','departement.json')
+        file_path = os.path.join('data','departement.geojson')
         Tools.download_file(geojson['departement'], file_path)
         RAW_FILE_GEOJSON = None
         with open(file_path, 'r') as f:
@@ -48,11 +48,11 @@ class Map():
         data = pd.Series(data, name='Pertes en ' + str(annee))
         data.index.name = 'Departement'
         data.reset_index()
-        print(data.to_string())
-        print(headers)
-        print(quantiles)
-        print(RAW_FILE_GEOJSON['features'][0]['properties'])
-        print(data[RAW_FILE_GEOJSON['features'][0]['id']])
+        # print(data.to_string())
+        # print(headers)
+        # print(quantiles)
+        # print(RAW_FILE_GEOJSON['features'][0]['properties'])
+        # print(data[RAW_FILE_GEOJSON['features'][0]['id']])
 
         m = folium.Map(location=[47.081, 2.3987], zoom_start=6)
         m.choropleth(

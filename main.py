@@ -75,13 +75,10 @@ def instantiateCollections():
         gareByUic[gare.uic] = gare
     #more efficient than a getGareByUic since we don't loop over gares for all pertes.
 
-
-    for dep in Departement.DATA:
-        print(dep.code)
     i = 0
     for perte in Perte.DATA:
         i += 1
-        Tools.global_progress_bar(i, len(Perte.DATA))
+        Tools.global_progress_bar("Computing losses by regions and departements... ", i, len(Perte.DATA))
         for annee in Annees:
             if str(perte.date[0:4]) == str(annee):
                 if perte.uic in gareByUic:

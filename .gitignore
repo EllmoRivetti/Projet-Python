@@ -3,3 +3,4 @@
 *.shp
 *.pyc
 *.html
+*.geojson

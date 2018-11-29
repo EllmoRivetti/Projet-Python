@@ -21,7 +21,8 @@ from src.view.map import Map
 DEBUG = False
 Annees = [2014, 2015, 2016, 2017, 2018]
 DicPop = dict()
-ListNbObjLostPerYear = list()
+gareByUic = dict()
+perteByGare = dict()
 
 def set_up():
     Departement.set_up()
@@ -29,11 +30,6 @@ def set_up():
     Perte.set_up()
     Region.set_up()
     instantiateCollections()
-    
-    Map.draw(Perte.tries, 2018)
-    diagram = Diagram(ListNbObjLostPerYear)
-    diagram.drawDiagram()
-    
 
 def instantiateCollections():
     #Fill the DicPop Dictionnary
@@ -49,11 +45,6 @@ def instantiateCollections():
                 if not reg.name in Departement.DepInReg:
                     Departement.DepInReg[reg.name] = list()
                 Departement.DepInReg[reg.name].append(dep.name)
-    
-    #Fill the DicNbObjPerYear Dictionnary
-    for obj in Perte.DATA:
-        date = obj.date[0:4]
-        ListNbObjLostPerYear.append(int(date))
 
     # PertesParRegion/Departement
     departements_inconnus = list()
@@ -73,9 +64,9 @@ def instantiateCollections():
         for annee in Annees:
             Perte.tries[region.name]['all'][annee] = 0
 
-    gareByUic = dict()
     for gare in Gare.DATA:
         gareByUic[gare.uic] = gare
+        perteByGare[gare] = 0
     #more efficient than a getGareByUic since we don't loop over gares for all pertes.
 
     i = 0
@@ -87,6 +78,7 @@ def instantiateCollections():
                 if perte.uic in gareByUic:
                     gare =  gareByUic[perte.uic]
                     if gare:
+                        perteByGare[gare] += 1
                         departement = Departement.getDepartementByName(gare.departement)
                         if departement:
                             region = Departement.getRegionForDepartement(departement.name) 
@@ -97,15 +89,14 @@ def instantiateCollections():
                                 departements_inconnus.append(gare.departement)
                     else:
                         pertes_ignores += 1
-    
-    if pertes_ignores > 0:
-        print('Failed to retrieve information from', pertes_ignores, 'pertes ! (there are', len(Perte.DATA), ' pertes)')
-    else:
-        print('All the pertes have been treated.')
-    if len(departements_inconnus) > 0:
-        print('There are ', len(departements_inconnus), ' unknown departements !')
-        print(departements_inconnus) 
     if DEBUG:
+        if pertes_ignores > 0:
+            print('Failed to retrieve information from', pertes_ignores, 'pertes ! (there are', len(Perte.DATA), ' pertes)')
+        else:
+            print('All the pertes have been treated.')
+        if len(departements_inconnus) > 0:
+            print('There are ', len(departements_inconnus), ' unknown departements !')
+            print(departements_inconnus) 
         print('\n##############')
         print(Perte.tries)
 
@@ -124,6 +115,10 @@ def clean_up():
             print(e)
 
 def main():
+    Map.draw(Perte.tries, 2018)
+    diagram = Diagram(perteByGare)
+    diagram.drawDiagram()
+
     if DEBUG:
         print("\n--------\n")
         print("Nombre de gares: ", len(Gare.DATA))
